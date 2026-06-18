@@ -3,7 +3,7 @@
 ## 1. Python Kurulumu
 
 1. Tarayıcıdan aç: **https://python.org/downloads**
-2. **Download Python 3.11** butonuna tıkla
+2. **Download Python 3.x** butonuna tıkla (sitedeki en güncel versiyonu indir)
 3. Kurulum ekranında **"Add Python to PATH"** kutusunu işaretle ✅
 4. **Install Now** butonuna bas
 5. Kurulum bitince CMD aç ve kontrol et:
@@ -14,7 +14,7 @@ python --version
 
 Çıktı şöyle olmalı:
 ```
-Python 3.11.x
+Python 3.x.x
 ```
 
 ---
@@ -112,6 +112,8 @@ Telegram'da botunu bul ve şunları dene:
 ### `python` komutu tanınmıyor
 Python kurulumunda **"Add Python to PATH"** işaretlenmemiş.  
 Çözüm: Python'u kaldır, tekrar kur ve kutucuğu işaretle.
+
+> **Not:** python.org'da her zaman en güncel versiyonu indir (3.12, 3.13, 3.14 vb. hepsi çalışır).
 
 ### `ModuleNotFoundError: telegram`
 Kütüphane kurulmamış.  
