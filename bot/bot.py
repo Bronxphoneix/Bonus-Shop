@@ -21,21 +21,21 @@ async def start(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
     if yeni:
         mesaj = (
             f"👋 Hoş geldin, {user.first_name}!\n\n"
-            "🎮 KodeMerkezi Gaming'e kayıt oldun.\n"
-            "💰 Başlangıç coinin: 0\n\n"
-            "Kod girerek veya paket satın alarak coin kazanabilirsin."
+            "🎮 KodeMerkezi'ne kayıt oldun.\n"
+            "💰 Başlangıç jetonun: 0\n\n"
+            "Kod girerek veya paket satın alarak jeton kazanabilirsin."
         )
     else:
         kullanici = db.kullanici_getir(user.id)
         mesaj = (
             f"👋 Tekrar hoş geldin, {user.first_name}!\n\n"
-            f"💰 Coin bakiyen: {kullanici[3]:,}"
+            f"💰 Jeton bakiyen: {kullanici[3]:,}"
         )
 
     klavye = [
         [InlineKeyboardButton("💰 Bakiyem", callback_data="bakiye"),
          InlineKeyboardButton("🎟 Kod Gir", callback_data="kod_gir")],
-        [InlineKeyboardButton("🛒 Coin Satın Al", callback_data="satin_al")],
+        [InlineKeyboardButton("🛒 Jeton Satın Al", callback_data="satin_al")],
     ]
     await update.message.reply_text(mesaj, reply_markup=InlineKeyboardMarkup(klavye))
 
@@ -46,7 +46,7 @@ async def bakiye(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
     if not kullanici:
         await update.message.reply_text("Önce /start yaz.")
         return
-    await update.message.reply_text(f"💰 Coin bakiyen: {kullanici[3]:,}")
+    await update.message.reply_text(f"💰 Jeton bakiyen: {kullanici[3]:,}")
 
 
 # ─── /kod ─────────────────────────────────────────────────
@@ -65,7 +65,7 @@ async def kod(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
     if sonuc == "ok":
         await update.message.reply_text(
             f"✅ Kod başarıyla kullanıldı!\n"
-            f"💰 +{coin:,} coin eklendi.\n"
+            f"💰 +{coin:,} jeton eklendi.\n"
             f"💳 Yeni bakiyen: {db.kullanici_getir(update.effective_user.id)[3]:,}"
         )
     else:
@@ -74,21 +74,21 @@ async def kod(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
 
 # ─── /satin-al ────────────────────────────────────────────
 async def satin_al(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
-    mesaj = "🛒 *Coin Paketleri*\n\n"
+    mesaj = "🛒 *Jeton Paketleri*\n\n"
     for p in COIN_PACKAGES:
-        mesaj += f"🎮 *{p['isim']}*\n💰 {p['coin']:,} Coin — {p['fiyat']}\n\n"
-    mesaj += "Satın almak için bir admin ile iletişime geç."
+        mesaj += f"🎮 *{p['isim']}*\n💰 {p['coin']:,} Jeton — {p['fiyat']}\n\n"
+    mesaj += "Satın almak için bir yönetici ile iletişime geç."
     await update.message.reply_text(mesaj, parse_mode="Markdown")
 
 
 # ─── ADMIN: /kod-uret ─────────────────────────────────────
 async def kod_uret(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
     if not admin_mi(update.effective_user.id):
-        await update.message.reply_text("❌ Bu komut sadece adminlere özel.")
+        await update.message.reply_text("❌ Bu komut sadece yöneticilere özel.")
         return
 
     if len(ctx.args) != 2:
-        await update.message.reply_text("Kullanım: /kod-uret <coin_miktarı> <adet>\nÖrnek: /kod-uret 1000 5")
+        await update.message.reply_text("Kullanım: /kod_uret <jeton_miktarı> <adet>\nÖrnek: /kod_uret 1000 5")
         return
 
     try:
@@ -103,7 +103,7 @@ async def kod_uret(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
         return
 
     kodlar = db.kod_olustur(coin, adet)
-    mesaj = f"✅ {adet} adet, {coin:,} coinlik kod üretildi:\n\n"
+    mesaj = f"✅ {adet} adet, {coin:,} jetonluk kod üretildi:\n\n"
     mesaj += "\n".join(f"`{k}`" for k in kodlar)
     await update.message.reply_text(mesaj, parse_mode="Markdown")
 
@@ -111,7 +111,7 @@ async def kod_uret(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
 # ─── ADMIN: /kullanici ────────────────────────────────────
 async def kullanici_bilgi(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
     if not admin_mi(update.effective_user.id):
-        await update.message.reply_text("❌ Bu komut sadece adminlere özel.")
+        await update.message.reply_text("❌ Bu komut sadece yöneticilere özel.")
         return
 
     if not ctx.args:
@@ -134,7 +134,7 @@ async def kullanici_bilgi(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
         f"ID: `{k[0]}`\n"
         f"Kullanıcı adı: @{k[1]}\n"
         f"Ad: {k[2]}\n"
-        f"💰 Coin: {k[3]:,}\n"
+        f"💰 Jeton: {k[3]:,}\n"
         f"📅 Kayıt: {k[4]}",
         parse_mode="Markdown"
     )
@@ -143,7 +143,7 @@ async def kullanici_bilgi(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
 # ─── ADMIN: /istatistik ───────────────────────────────────
 async def istatistik(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
     if not admin_mi(update.effective_user.id):
-        await update.message.reply_text("❌ Bu komut sadece adminlere özel.")
+        await update.message.reply_text("❌ Bu komut sadece yöneticilere özel.")
         return
 
     t_k, b_k, k_k, t_c = db.istatistik_getir()
@@ -152,7 +152,7 @@ async def istatistik(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
         f"👥 Toplam kullanıcı: {t_k}\n"
         f"🎟 Bekleyen kod: {b_k}\n"
         f"✅ Kullanılan kod: {k_k}\n"
-        f"💰 Toplam coin: {t_c:,}",
+        f"💰 Toplam jeton: {t_c:,}",
         parse_mode="Markdown"
     )
 
@@ -160,11 +160,11 @@ async def istatistik(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
 # ─── ADMIN: /coin-ekle ────────────────────────────────────
 async def coin_ekle_admin(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
     if not admin_mi(update.effective_user.id):
-        await update.message.reply_text("❌ Bu komut sadece adminlere özel.")
+        await update.message.reply_text("❌ Bu komut sadece yöneticilere özel.")
         return
 
     if len(ctx.args) != 2:
-        await update.message.reply_text("Kullanım: /coin-ekle <telegram_id> <miktar>")
+        await update.message.reply_text("Kullanım: /coin_ekle <telegram_id> <miktar>")
         return
 
     try:
@@ -179,10 +179,10 @@ async def coin_ekle_admin(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
         await update.message.reply_text("❌ Kullanıcı bulunamadı.")
         return
 
-    db.coin_ekle(hedef_id, miktar, "Admin tarafından eklendi")
+    db.coin_ekle(hedef_id, miktar, "Yönetici tarafından eklendi")
     yeni = db.kullanici_getir(hedef_id)
     await update.message.reply_text(
-        f"✅ {k[2]} ({hedef_id}) kullanıcısına {miktar:,} coin eklendi.\n"
+        f"✅ {k[2]} ({hedef_id}) kullanıcısına {miktar:,} jeton eklendi.\n"
         f"💰 Yeni bakiye: {yeni[3]:,}"
     )
 
@@ -195,16 +195,16 @@ async def callback(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
 
     if data == "bakiye":
         k = db.kullanici_getir(query.from_user.id)
-        await query.message.reply_text(f"💰 Coin bakiyen: {k[3]:,}" if k else "Önce /start yaz.")
+        await query.message.reply_text(f"💰 Jeton bakiyen: {k[3]:,}" if k else "Önce /start yaz.")
 
     elif data == "kod_gir":
         await query.message.reply_text("Kodu girmek için:\n/kod KM-XXXXXXXX")
 
     elif data == "satin_al":
-        mesaj = "🛒 *Coin Paketleri*\n\n"
+        mesaj = "🛒 *Jeton Paketleri*\n\n"
         for p in COIN_PACKAGES:
-            mesaj += f"🎮 *{p['isim']}*\n💰 {p['coin']:,} Coin — {p['fiyat']}\n\n"
-        mesaj += "Satın almak için bir admin ile iletişime geç."
+            mesaj += f"🎮 *{p['isim']}*\n💰 {p['coin']:,} Jeton — {p['fiyat']}\n\n"
+        mesaj += "Satın almak için bir yönetici ile iletişime geç."
         await query.message.reply_text(mesaj, parse_mode="Markdown")
 
 
