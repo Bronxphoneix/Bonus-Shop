@@ -61,15 +61,18 @@ async def kod(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
         await update.message.reply_text("Önce /start yaz.")
         return
 
-    coin, sonuc = db.kod_kullan(update.effective_user.id, girilen_kod)
-    if sonuc == "ok":
-        await update.message.reply_text(
-            f"✅ Kod başarıyla kullanıldı!\n"
-            f"💰 +{coin:,} jeton eklendi.\n"
-            f"💳 Yeni bakiyen: {db.kullanici_getir(update.effective_user.id)[3]:,}"
-        )
-    else:
-        await update.message.reply_text(sonuc)
+    try:
+        coin, sonuc = db.kod_kullan(update.effective_user.id, girilen_kod)
+        if sonuc == "ok":
+            await update.message.reply_text(
+                f"✅ Kod başarıyla kullanıldı!\n"
+                f"💰 +{coin:,} jeton eklendi.\n"
+                f"💳 Yeni bakiyen: {db.kullanici_getir(update.effective_user.id)[3]:,}"
+            )
+        else:
+            await update.message.reply_text(sonuc)
+    except Exception as e:
+        await update.message.reply_text(f"❌ Bir hata oluştu: {str(e)}")
 
 
 # ─── /satin-al ────────────────────────────────────────────

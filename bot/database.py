@@ -110,26 +110,37 @@ def kod_olustur(coin_degeri, adet):
 def kod_kullan(telegram_id, kod):
     con = baglanti()
     cur = con.cursor()
-    cur.execute("SELECT * FROM kodlar WHERE kod=?", (kod.upper(),))
-    row = cur.fetchone()
+    try:
+        cur.execute("SELECT * FROM kodlar WHERE kod=?", (kod.upper(),))
+        row = cur.fetchone()
 
-    if not row:
+        if not row:
+            return None, "❌ Geçersiz kod."
+
+        if row[2] == 1:
+            return None, "❌ Bu kod daha önce kullanılmış."
+
+        coin_degeri = row[1]
+
+        cur.execute(
+            "UPDATE kodlar SET kullanildi_mi=1, kullanan_id=?, kullanim=? WHERE kod=?",
+            (telegram_id, datetime.now().strftime("%Y-%m-%d %H:%M"), kod.upper())
+        )
+        cur.execute(
+            "UPDATE kullanicilar SET coin = coin + ? WHERE telegram_id=?",
+            (coin_degeri, telegram_id)
+        )
+        cur.execute(
+            "INSERT INTO islemler (telegram_id, tur, miktar, aciklama, tarih) VALUES (?,?,?,?,?)",
+            (telegram_id, "kazanç", coin_degeri, f"Kod kullanımı: {kod.upper()}", datetime.now().strftime("%Y-%m-%d %H:%M"))
+        )
+        con.commit()
+        return coin_degeri, "ok"
+    except Exception as e:
+        con.rollback()
+        return None, f"❌ Hata oluştu: {str(e)}"
+    finally:
         con.close()
-        return None, "❌ Geçersiz kod."
-
-    if row[2] == 1:
-        con.close()
-        return None, "❌ Bu kod daha önce kullanılmış."
-
-    coin_degeri = row[1]
-    cur.execute(
-        "UPDATE kodlar SET kullanildi_mi=1, kullanan_id=?, kullanim=? WHERE kod=?",
-        (telegram_id, datetime.now().strftime("%Y-%m-%d %H:%M"), kod.upper())
-    )
-    coin_ekle(telegram_id, coin_degeri, f"Kod kullanımı: {kod.upper()}")
-    con.commit()
-    con.close()
-    return coin_degeri, "ok"
 
 
 def istatistik_getir():
