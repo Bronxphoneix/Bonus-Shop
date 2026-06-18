@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pragmatic Play Slot Oyunları</title>
+  <title data-i18n="pageTitle">Pragmatic Play Slot Oyunları</title>
   <link rel="stylesheet" href="style.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -18,14 +18,15 @@
         <span class="logo-badge">TR</span>
       </div>
       <nav class="nav">
-        <a href="#" class="nav-link">Spor</a>
-        <a href="#" class="nav-link active">Casino</a>
-        <a href="#" class="nav-link">Live Casino</a>
-        <a href="#" class="nav-link">Promosyonlar</a>
+        <a href="#" class="nav-link" data-i18n="navSports">Spor</a>
+        <a href="#" class="nav-link active" data-i18n="navCasino">Casino</a>
+        <a href="#" class="nav-link" data-i18n="navLive">Live Casino</a>
+        <a href="#" class="nav-link" data-i18n="navPromo">Promosyonlar</a>
       </nav>
       <div class="header-actions">
-        <button class="btn-login">Giriş Yap</button>
-        <button class="btn-register">Kayıt Ol</button>
+        <button class="btn-lang" id="langToggle">EN</button>
+        <button class="btn-login" data-i18n="btnLogin">Giriş Yap</button>
+        <button class="btn-register" data-i18n="btnRegister">Kayıt Ol</button>
       </div>
     </div>
   </header>
@@ -33,9 +34,9 @@
   <!-- BREADCRUMB -->
   <div class="breadcrumb-bar">
     <div class="container">
-      <span class="breadcrumb-item"><a href="#">Casino</a></span>
+      <span class="breadcrumb-item"><a href="#" data-i18n="navCasino">Casino</a></span>
       <span class="breadcrumb-sep">›</span>
-      <span class="breadcrumb-item"><a href="#">Slot Oyunları</a></span>
+      <span class="breadcrumb-item"><a href="#" data-i18n="breadSlots">Slot Oyunları</a></span>
       <span class="breadcrumb-sep">›</span>
       <span class="breadcrumb-item active">Pragmatic Play</span>
     </div>
@@ -52,15 +53,15 @@
         <div class="provider-stats">
           <div class="stat">
             <span class="stat-num">250+</span>
-            <span class="stat-label">Oyun</span>
+            <span class="stat-label" data-i18n="statGames">Oyun</span>
           </div>
           <div class="stat">
             <span class="stat-num">RTP 96%</span>
-            <span class="stat-label">Ortalama</span>
+            <span class="stat-label" data-i18n="statAvg">Ortalama</span>
           </div>
           <div class="stat">
             <span class="stat-num">21.100x</span>
-            <span class="stat-label">Maks. Kazanç</span>
+            <span class="stat-label" data-i18n="statMax">Maks. Kazanç</span>
           </div>
         </div>
       </div>
@@ -71,23 +72,23 @@
   <div class="filters-bar">
     <div class="container">
       <div class="filters-left">
-        <button class="filter-btn active" data-filter="all">Tümü</button>
-        <button class="filter-btn" data-filter="popular">Popüler</button>
-        <button class="filter-btn" data-filter="new">Yeni</button>
-        <button class="filter-btn" data-filter="megaways">Megaways</button>
-        <button class="filter-btn" data-filter="buy-bonus">Bonus Satın Al</button>
-        <button class="filter-btn" data-filter="jackpot">Jackpot</button>
+        <button class="filter-btn active" data-filter="all"     data-i18n="filterAll">Tümü</button>
+        <button class="filter-btn"        data-filter="popular" data-i18n="filterPopular">Popüler</button>
+        <button class="filter-btn"        data-filter="new"     data-i18n="filterNew">Yeni</button>
+        <button class="filter-btn"        data-filter="megaways">Megaways</button>
+        <button class="filter-btn"        data-filter="buy-bonus" data-i18n="filterBonus">Bonus Satın Al</button>
+        <button class="filter-btn"        data-filter="jackpot">Jackpot</button>
       </div>
       <div class="filters-right">
         <div class="search-box">
           <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
           </svg>
-          <input type="text" id="searchInput" placeholder="Oyun ara..." class="search-input">
+          <input type="text" id="searchInput" data-i18n-placeholder="searchPlaceholder" placeholder="Oyun ara..." class="search-input">
         </div>
         <select class="sort-select" id="sortSelect">
-          <option value="popular">En Popüler</option>
-          <option value="newest">En Yeni</option>
+          <option value="popular" data-i18n="sortPopular">En Popüler</option>
+          <option value="newest"  data-i18n="sortNewest">En Yeni</option>
           <option value="az">A-Z</option>
         </select>
       </div>
@@ -97,15 +98,14 @@
   <!-- GAMES GRID -->
   <main class="main-content">
     <div class="container">
-      <div class="games-count"><span id="gamesCount">30</span> oyun listeleniyor</div>
-      <div class="games-grid" id="gamesGrid">
-
-        <!-- Game cards injected by JS -->
-
+      <div class="games-count">
+        <span id="gamesCount">30</span>
+        <span data-i18n="gamesListed"> oyun listeleniyor</span>
       </div>
+      <div class="games-grid" id="gamesGrid"></div>
       <div class="no-results" id="noResults" style="display:none">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="48" height="48"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        <p>Arama sonucu bulunamadı.</p>
+        <p data-i18n="noResults">Arama sonucu bulunamadı.</p>
       </div>
     </div>
   </main>
@@ -113,9 +113,9 @@
   <!-- INFO SECTION -->
   <section class="info-section">
     <div class="container">
-      <h2>Pragmatic Play Slot Oyunları</h2>
-      <p>Pragmatic Play, dünyanın önde gelen oyun geliştiricilerinden biridir. Yüksek kaliteli grafikleri, etkileyici bonus özellikleri ve yüksek ödeme oranlarıyla Pragmatic Play slotları, oyuncular arasında en çok tercih edilen oyunlar arasındadır.</p>
-      <p>Gates of Olympus, Sweet Bonanza, The Dog House ve daha pek çok popüler slot oyunu Pragmatic Play'in imzasını taşımaktadır. Tüm oyunlar HTML5 teknolojisiyle geliştirilmiş olup mobil cihazlarla tam uyumludur.</p>
+      <h2 data-i18n="infoTitle">Pragmatic Play Slot Oyunları</h2>
+      <p data-i18n="infoP1">Pragmatic Play, dünyanın önde gelen oyun geliştiricilerinden biridir. Yüksek kaliteli grafikleri, etkileyici bonus özellikleri ve yüksek ödeme oranlarıyla Pragmatic Play slotları, oyuncular arasında en çok tercih edilen oyunlar arasındadır.</p>
+      <p data-i18n="infoP2">Gates of Olympus, Sweet Bonanza, The Dog House ve daha pek çok popüler slot oyunu Pragmatic Play'in imzasını taşımaktadır. Tüm oyunlar HTML5 teknolojisiyle geliştirilmiş olup mobil cihazlarla tam uyumludur.</p>
     </div>
   </section>
 
@@ -128,31 +128,31 @@
             <span class="logo-text">BETZONE</span>
             <span class="logo-badge">TR</span>
           </div>
-          <p>18+ Sorumlu Oyun. Kumar bağımlılığı yardım hattı: 182</p>
+          <p data-i18n="footerDisclaimer">18+ Sorumlu Oyun. Kumar bağımlılığı yardım hattı: 182</p>
         </div>
         <div class="footer-links">
           <div class="footer-col">
-            <h4>Casino</h4>
-            <a href="#">Slot Oyunları</a>
-            <a href="#">Live Casino</a>
-            <a href="#">Masa Oyunları</a>
+            <h4 data-i18n="navCasino">Casino</h4>
+            <a href="#" data-i18n="breadSlots">Slot Oyunları</a>
+            <a href="#" data-i18n="navLive">Live Casino</a>
+            <a href="#" data-i18n="footerTable">Masa Oyunları</a>
           </div>
           <div class="footer-col">
-            <h4>Bilgi</h4>
-            <a href="#">Hakkımızda</a>
-            <a href="#">Gizlilik Politikası</a>
-            <a href="#">Kullanım Koşulları</a>
+            <h4 data-i18n="footerInfo">Bilgi</h4>
+            <a href="#" data-i18n="footerAbout">Hakkımızda</a>
+            <a href="#" data-i18n="footerPrivacy">Gizlilik Politikası</a>
+            <a href="#" data-i18n="footerTerms">Kullanım Koşulları</a>
           </div>
           <div class="footer-col">
-            <h4>Destek</h4>
-            <a href="#">Canlı Destek</a>
-            <a href="#">SSS</a>
-            <a href="#">İletişim</a>
+            <h4 data-i18n="footerSupport">Destek</h4>
+            <a href="#" data-i18n="footerLiveChat">Canlı Destek</a>
+            <a href="#" data-i18n="footerFaq">SSS</a>
+            <a href="#" data-i18n="footerContact">İletişim</a>
           </div>
         </div>
       </div>
       <div class="footer-bottom">
-        <p>&copy; 2024 BetZone. Tüm hakları saklıdır. | 18+ Kumar bağımlılığına dikkat edin.</p>
+        <p data-i18n="footerCopy">&copy; 2024 BetZone. Tüm hakları saklıdır. | 18+ Kumar bağımlılığına dikkat edin.</p>
       </div>
     </div>
   </footer>

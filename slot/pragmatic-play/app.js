@@ -1,3 +1,125 @@
+// ─── ÇEVİRİ SİSTEMİ ───────────────────────────────────────
+const translations = {
+  tr: {
+    pageTitle:        "Pragmatic Play Slot Oyunları",
+    navSports:        "Spor",
+    navCasino:        "Casino",
+    navLive:          "Live Casino",
+    navPromo:         "Promosyonlar",
+    btnLogin:         "Giriş Yap",
+    btnRegister:      "Kayıt Ol",
+    breadSlots:       "Slot Oyunları",
+    statGames:        "Oyun",
+    statAvg:          "Ortalama",
+    statMax:          "Maks. Kazanç",
+    filterAll:        "Tümü",
+    filterPopular:    "Popüler",
+    filterNew:        "Yeni",
+    filterBonus:      "Bonus Satın Al",
+    searchPlaceholder:"Oyun ara...",
+    sortPopular:      "En Popüler",
+    sortNewest:       "En Yeni",
+    gamesListed:      " oyun listeleniyor",
+    noResults:        "Arama sonucu bulunamadı.",
+    cardPlay:         "Oyna",
+    cardDemo:         "Demo",
+    infoTitle:        "Pragmatic Play Slot Oyunları",
+    infoP1:           "Pragmatic Play, dünyanın önde gelen oyun geliştiricilerinden biridir. Yüksek kaliteli grafikleri, etkileyici bonus özellikleri ve yüksek ödeme oranlarıyla Pragmatic Play slotları, oyuncular arasında en çok tercih edilen oyunlar arasındadır.",
+    infoP2:           "Gates of Olympus, Sweet Bonanza, The Dog House ve daha pek çok popüler slot oyunu Pragmatic Play'in imzasını taşımaktadır. Tüm oyunlar HTML5 teknolojisiyle geliştirilmiş olup mobil cihazlarla tam uyumludur.",
+    footerDisclaimer: "18+ Sorumlu Oyun. Kumar bağımlılığı yardım hattı: 182",
+    footerTable:      "Masa Oyunları",
+    footerInfo:       "Bilgi",
+    footerAbout:      "Hakkımızda",
+    footerPrivacy:    "Gizlilik Politikası",
+    footerTerms:      "Kullanım Koşulları",
+    footerSupport:    "Destek",
+    footerLiveChat:   "Canlı Destek",
+    footerFaq:        "SSS",
+    footerContact:    "İletişim",
+    footerCopy:       "© 2024 BetZone. Tüm hakları saklıdır. | 18+ Kumar bağımlılığına dikkat edin.",
+    alertLogin:       "Oynamak için giriş yapınız.",
+    alertDemo:        "Demo: ",
+    badgeNew:         "YENİ",
+    badgePopular:     "POPÜLER",
+    badgeBonus:       "BONUS",
+    badgeJackpot:     "JACKPOT",
+    badgeMegaways:    "MEGAWAYS",
+  },
+  en: {
+    pageTitle:        "Pragmatic Play Slot Games",
+    navSports:        "Sports",
+    navCasino:        "Casino",
+    navLive:          "Live Casino",
+    navPromo:         "Promotions",
+    btnLogin:         "Log In",
+    btnRegister:      "Sign Up",
+    breadSlots:       "Slot Games",
+    statGames:        "Games",
+    statAvg:          "Average",
+    statMax:          "Max Win",
+    filterAll:        "All",
+    filterPopular:    "Popular",
+    filterNew:        "New",
+    filterBonus:      "Buy Bonus",
+    searchPlaceholder:"Search games...",
+    sortPopular:      "Most Popular",
+    sortNewest:       "Newest",
+    gamesListed:      " games listed",
+    noResults:        "No results found.",
+    cardPlay:         "Play",
+    cardDemo:         "Demo",
+    infoTitle:        "Pragmatic Play Slot Games",
+    infoP1:           "Pragmatic Play is one of the world's leading game developers. With high-quality graphics, impressive bonus features and high payout rates, Pragmatic Play slots are among the most preferred games by players.",
+    infoP2:           "Gates of Olympus, Sweet Bonanza, The Dog House and many more popular slot games bear the signature of Pragmatic Play. All games are developed with HTML5 technology and are fully compatible with mobile devices.",
+    footerDisclaimer: "18+ Responsible Gaming. Gambling helpline: 182",
+    footerTable:      "Table Games",
+    footerInfo:       "Info",
+    footerAbout:      "About Us",
+    footerPrivacy:    "Privacy Policy",
+    footerTerms:      "Terms of Use",
+    footerSupport:    "Support",
+    footerLiveChat:   "Live Support",
+    footerFaq:        "FAQ",
+    footerContact:    "Contact",
+    footerCopy:       "© 2024 BetZone. All rights reserved. | 18+ Please gamble responsibly.",
+    alertLogin:       "Please log in to play.",
+    alertDemo:        "Demo: ",
+    badgeNew:         "NEW",
+    badgePopular:     "POPULAR",
+    badgeBonus:       "BONUS",
+    badgeJackpot:     "JACKPOT",
+    badgeMegaways:    "MEGAWAYS",
+  }
+};
+
+let currentLang = localStorage.getItem('lang') || 'tr';
+
+function setLanguage(lang) {
+  currentLang = lang;
+  localStorage.setItem('lang', lang);
+  document.documentElement.lang = lang;
+
+  const t = translations[lang];
+
+  document.title = t.pageTitle;
+
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (t[key] !== undefined) el.textContent = t[key];
+  });
+
+  document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+    const key = el.getAttribute('data-i18n-placeholder');
+    if (t[key] !== undefined) el.placeholder = t[key];
+  });
+
+  const toggle = document.getElementById('langToggle');
+  if (toggle) toggle.textContent = lang === 'tr' ? 'EN' : 'TR';
+
+  renderGames();
+}
+
+// ─── OYUNLAR ──────────────────────────────────────────────
 const games = [
   {
     id: 'gates-of-olympus',
@@ -331,13 +453,16 @@ const games = [
   },
 ];
 
-const BADGE_LABEL = {
-  new: 'YENİ',
-  popular: 'POPÜLER',
-  bonus: 'BONUS',
-  jackpot: 'JACKPOT',
-  megaways: 'MEGAWAYS',
-};
+function getBadgeLabel(key) {
+  const t = translations[currentLang];
+  return {
+    new:      t.badgeNew,
+    popular:  t.badgePopular,
+    bonus:    t.badgeBonus,
+    jackpot:  t.badgeJackpot,
+    megaways: t.badgeMegaways,
+  }[key] || key.toUpperCase();
+}
 
 function formatPlayers(n) {
   if (n >= 1000) return (n / 1000).toFixed(1) + 'K';
@@ -345,11 +470,12 @@ function formatPlayers(n) {
 }
 
 function buildCard(game) {
+  const t = translations[currentLang];
   const imgUrl = `https://static.pragmaticplay.net/gamePreviews/${game.code}/en.jpg`;
   const visibleBadges = game.badges.slice(0, 2);
 
   const badgesHTML = visibleBadges
-    .map(b => `<span class="badge badge-${b}">${BADGE_LABEL[b]}</span>`)
+    .map(b => `<span class="badge badge-${b}">${getBadgeLabel(b)}</span>`)
     .join('');
 
   return `
@@ -365,8 +491,8 @@ function buildCard(game) {
           ${game.name}
         </div>
         <div class="game-overlay">
-          <button class="btn-play" onclick="launchGame('${game.id}', false)">Oyna</button>
-          <button class="btn-demo" onclick="launchGame('${game.id}', true)">Demo</button>
+          <button class="btn-play" onclick="launchGame('${game.id}', false)">${t.cardPlay}</button>
+          <button class="btn-demo" onclick="launchGame('${game.id}', true)">${t.cardDemo}</button>
         </div>
         ${badgesHTML ? `<div class="game-badges">${badgesHTML}</div>` : ''}
       </div>
@@ -385,7 +511,8 @@ function buildCard(game) {
 }
 
 function launchGame(id, demo) {
-  alert(demo ? `Demo: ${id}` : `Oynamak için giriş yapınız.`);
+  const t = translations[currentLang];
+  alert(demo ? `${t.alertDemo}${id}` : t.alertLogin);
 }
 
 let currentFilter = 'all';
@@ -439,4 +566,8 @@ document.getElementById('searchInput').addEventListener('input', e => {
 
 document.getElementById('sortSelect').addEventListener('change', renderGames);
 
-renderGames();
+document.getElementById('langToggle').addEventListener('click', () => {
+  setLanguage(currentLang === 'tr' ? 'en' : 'tr');
+});
+
+setLanguage(currentLang);
